@@ -15,3 +15,36 @@
 ## problem19
 member access within null pointer of type ‘struct ListNode’,是因为编译器不知道当前的结点与结点的下一个结点是否为NULL，而自己有没有声明，所以系统不确定，于是就报错。这也说明了链表中的结点使用的时候比其他数据结构要严格一些，一定要时刻保证使用的结点不为NULL，为NULL要做出相应处理。
 ## 
+# 6/20
+problem26   
+1. 容器的erase(b,e)中的e是指要删除元素的下一个迭代器位置，返回的也是删除的最后一个元素的迭代器位置
+2. 不要随便用-1当flag值，可能是输入的一种，用INT_MAX或者INT_MIN     
+
+problem26   移出数组重复数据
+```
+int count = 0;
+for(int i = 1; i < n; i++){
+    if(A[i] == A[i-1]) count++;
+    else A[i-count] = A[i];
+}
+return n-count;
+```
+
+problem28   实现strstr()
+```
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        size_t it = haystack.find(needle);
+        return it != string::npos?it:-1;
+    }
+};
+```
+
+problem29   
+> abs(INT32_MIN) == INT32_MIN   
+llabs(INT32_MIN) == -INT32_MIN == INT32_MAX+1   
+这里是由于机器中存放的是补码，最高位是符号位占掉一位，INT32_MIN去反溢出后符号位还是1，所以是-2147483648     
+(ps:按照csapp的求补码方法，1000 = -1*2^4 = -8， 1111 = -1 *2^3 + 2^2 + 2^1 + 2^0 = -1)
+
+problem
