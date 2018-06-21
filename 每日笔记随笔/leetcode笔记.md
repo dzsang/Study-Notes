@@ -47,4 +47,98 @@ llabs(INT32_MIN) == -INT32_MIN == INT32_MAX+1
 这里是由于机器中存放的是补码，最高位是符号位占掉一位，INT32_MIN去反溢出后符号位还是1，所以是-2147483648     
 (ps:按照csapp的求补码方法，1000 = -1*2^4 = -8， 1111 = -1 *2^3 + 2^2 + 2^1 + 2^0 = -1)
 
-problem
+# 6/21
+problem 30    
+这题本来是先把所有的words排列组合起来，但是开销太大了，要先求n！个结果还要保存，这是不能接受的      
+然后注意到题目给定的单词的长度都是一样的，采取网上的方法，对类似的题目采用滑动窗口方法来做。  
+
+```
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> res;
+        if (s.empty() || words.empty())
+            return res;
+        unordered_map<string, int> wordTimes;
+        for (int i = 0; i < words.size(); ++i){
+            if (wordTimes.count(words[i]) == 0)
+                wordTimes.insert(make_pair(words[i], 1));
+            else wordTimes[words[i]]++;
+        }
+        int wordLen = words[0].size();
+
+        for(int i = 0; i < wordLen; i++)
+        {//为了不遗漏从s的每一个位置开始的子串，第一层循环为单词的长度
+            unordered_map<string, int>wordTimes2;//当前窗口中单词出现的次数
+            int winStart = i, cnt = 0;//winStart为窗口起始位置,cnt为当前窗口中的单词数目
+            for(int winEnd = i; winEnd <= (int)s.size()-wordLen; winEnd+=wordLen)
+            {//窗口为[winStart,winEnd)
+                string word = s.substr(winEnd, wordLen);
+                if(wordTimes.find(word) != wordTimes.end())
+                {
+                    if(wordTimes2.find(word) == wordTimes2.end())
+                        wordTimes2[word] = 1;
+                    else wordTimes2[word]++;
+
+                    if(wordTimes2[word] <= wordTimes[word])
+                        cnt++;
+                    else
+                    {//当前的单词在words中，但是它已经在窗口中出现了相应的次数，不应该加入窗口
+                        //此时，应该把窗口起始位置向左移动到，该单词第一次出现的位置的下一个单词位置
+                        for(int k = winStart; ; k += wordLen)
+                        {
+                            string tmpstr = s.substr(k, wordLen);
+                            wordTimes2[tmpstr]--;
+                            if(tmpstr == word)
+                            {
+                                winStart = k + wordLen;
+                                break;
+                            }
+                            cnt--;
+                        }
+                    }
+                    if(cnt == words.size())
+                        res.push_back(winStart);
+                }
+                else
+                {//发现不在L中的单词
+                    winStart = winEnd + wordLen;
+                    wordTimes2.clear();
+                    cnt = 0;
+                }
+            }
+        }
+        return res;
+    }
+};
+```  
+problem32   
+括号匹配之类的题目第一时间想到的就是栈，但是在压栈出栈的时候可以用索引值而不是对象本身，方便求长度之类的；  
+然后这题的括号可以直接左右2次扫描来求，不用额外辅助空间
+```
+    int longestValidParentheses(string s) {
+        int maxlen = 0;
+        int left = 0, right = 0;
+        for (int i = 0; i < s.size(); ++i){
+            if (s[i] == 'c')
+                left++;
+            else right++;
+            if (left == right)
+                maxlen = max(maxlen, 2*right);
+            else if (right >= left)
+                left = right = 0;
+        }
+        left = right = 0;
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (s[i] == '(')
+                left++;
+            else
+                right++;
+            if (left == right) {
+                maxlen = max(maxlen, 2*left);
+            } else if (left >= right)
+                left = right = 0;
+        }
+        return maxlen;
+    }
+```
