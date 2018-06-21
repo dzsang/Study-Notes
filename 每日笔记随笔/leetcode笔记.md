@@ -142,3 +142,11 @@ problem32
         return maxlen;
     }
 ```
+problem34   
+size_t是无符号数，用作循环条件使用的时候要小心减到负值后出错，编译器是不会报错的。
+
+problem35   
+vector的find用法，vector没有自带find函数，只能用通用的。
+ vector<int>::iterator result = find( nums.begin(), nums.end(), target );
+ vector.insert 是在迭代器指向的地方之前位置插入，返回指向插入值的迭代器
+ 
