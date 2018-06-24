@@ -150,3 +150,5 @@ vector的find用法，vector没有自带find函数，只能用通用的。
  vector<int>::iterator result = find( nums.begin(), nums.end(), target );
  vector.insert 是在迭代器指向的地方之前位置插入，返回指向插入值的迭代器
  
+problem36   
+string用char初始化方式: string s(n, 'c') 把s初始化为由连续n个字符c组成的串
