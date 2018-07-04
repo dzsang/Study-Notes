@@ -244,3 +244,9 @@ while (Q非空){
     标记u为已访问;
 }
 ```
+# 7/3 
+<font color=red size=3 face="微软雅黑">
+HARD
+</font>
+
+problem 42：Trapping Rain Water

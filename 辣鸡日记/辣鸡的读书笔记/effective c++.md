@@ -30,4 +30,8 @@ w2 = w1;          copy assignment构造
 如果客户需要对某个操作函数运行期间抛出的异常做出反应，那么class应该提供一个普通函数（而非在析构函数中）执行该操作。
 3. 在构造和析构期间不要调用virtual函数，因为这类调用从不下降至derived class(比起当前执行构造函数和析构函数的那层)
 4. 令赋值(assignment)操作符返回一个reference to **this*
-5. 
+# 7/3
+1. 在operator=中处理自我赋值问题，让其具“自我赋值安全性”和“异常安全性”  
+>详解C++右值引用
+[https://blog.csdn.net/renwotao2009/article/details/46335859](https://blog.csdn.net/renwotao2009/article/details/46335859)
+2. 
