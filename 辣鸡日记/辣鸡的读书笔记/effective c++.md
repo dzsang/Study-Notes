@@ -66,3 +66,19 @@ protected并不比public更具封装性。
 - 在你的class或template所在的命名空间内提供一个non-member swap，并令它调用上述swap成员函数
 - 如果你正在编写一个class(而非class template)，为你的class特化std::swap，并令他调用你的swap成员函数。
 最后，如果你调用swap，请确定包含一个using声明，以便让std::swap在你的函数内曝光可见吗，然后不加任何namespace修饰符，赤裸裸地调用swap
+# 7/6 
+1. 通过default构造函数构造一个对象然后对它赋值比直接在构造时指定初值效率差。
+2. 尽量延后变量定义式的出现，这样做可增加程序的清晰度并改善程序效率。
+3. 
+- const_cast:将对象的常量特性去除
+- dynamic_cast:主要用来执行“安全向下转型”，也就是用来决定某对象是否归属继承体系中的某个类型。他是唯一无法由旧式语法执行的动作，也是唯一可能耗费重大运行成本的转型动作
+- reinterpret-cast:意图执行低级转型，时机动作(及结果)可能取决于编译器，这就表示他不可移植。例如将一个pointer to int转型成一个int。这一类转型在低级代码以外很少见。
+- static_cast:用来强迫隐式转换，例如将con-const对象转为const对象，或将int转为double等等。他也可以用来执行上述多种转换的反向，例如将void*指针转换成typed指针，将基类指针转换成派生类指针。但它无法将const转为non-const。
+4. 单一对象(例如一个类型为derived的对象)可能拥有一个以上的地址例如“以base* 指向它时的地址”和以derived* 指向它时的地址)
+5. 使用dynamic_cast通常是因为你想在一个你认定为derived class对象身上执行derived vlass操作函数，但你的手上却只有一个“指向base”的pointer或者reference，你只能靠它们来处理对象
+6. 
+- 如果可以，尽量避免转型，特别是在注重效率的代码中避免dynamic_cast。如果有个设计需要转型动作，试着发展无需转型的替代设计。
+- 如果转型是必要的，试着将它隐藏在某个函数背后。客户随后可以调用该函数，而不需将转型方进他们自己的代码内。
+- 宁可使用C++-style转型，不要使用旧式转型
+7. 避免返回handles(包括reference、指针、迭代器)指向对象内部。遵守这个条款可增加封装性，帮助const成员函数的行为像个const，并将发生“虚吊号码牌”(hangling handles)的可能性降至最低。
+8. 
