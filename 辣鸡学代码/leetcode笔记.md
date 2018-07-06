@@ -249,4 +249,89 @@ while (Q非空){
 HARD
 </font>
 
-problem 42：Trapping Rain Water
+[problem 42：Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/solution/)
+# 7/4
+problem43  Multiply Strings     
+我自己的方法
+```
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if (num1 == "0" || num2 == "0")
+            return "0";
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        for (int i = 0; i < num2.size(); ++i){
+            char cf = '0';
+            string temp = "";
+            for (auto &d: num1){
+                temp += ((num2[i]-'0')*(d-'0')+(cf-'0'))%10+'0';
+                cf = ((num2[i]-'0')*(d-'0')+(cf-'0'))/10+'0';
+            }
+            if (cf != '0')
+                temp += cf;
+            reverse(temp.begin(), temp.end());
+            for (int j = i; j >= 1; j--)
+                temp += '0';
+            ans = my_add(ans, temp);
+        }
+        return ans;
+    }
+    string my_add(string num1, string num2){
+        if (num1 == "")
+            return num2;
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        for (int i = num2.size()-num1.size(); i>0; --i)
+            num1+='0';
+        string res = "";
+        char cf = '0';
+        for (int i = 0; i < num2.size(); ++i){
+            res += ((num1[i]-'0')+(num2[i]-'0') + (cf-'0'))%10+'0';
+            cf = ((num1[i]-'0')+(num2[i]-'0') + (cf-'0'))/10+'0';
+        }
+        if (cf != '0')
+            res += cf;
+        reverse(res.begin(), res.end());
+        return res;
+    }
+
+private:
+    string ans = "";
+};
+```
+比较优秀的方法
+```
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if (num1.empty() || num2.empty())
+            return "";
+
+        std::reverse(num1.begin(), num1.end());
+        std::reverse(num2.begin(), num2.end());
+        std::string res(num1.size() + num2.size(),'0');
+        for (int j = 0; j < num2.size(); j++)
+        {
+            int tmp = 0;
+            int val = num2[j] - '0';
+            for (int i = 0; i < num1.size(); i++)
+            {
+                tmp += (num1[i] - '0') * val + (res[i + j] - '0');
+                res[i + j] = tmp % 10 + '0';
+                tmp /= 10;
+            }
+            if (tmp != 0)
+                res[num1.size() + j] = tmp + '0';
+        }
+        std::reverse(res.begin(), res.end());
+        int count = 0;
+        while (count < res.size() - 1 && res[count] == '0')
+            count++;
+        res.erase(0, count);
+        return res;
+    }
+};
+```
+相比之下我自己的方法太按部就班了，这里要找到乘法的规律：两个数相乘，得到的结果位数不会超过输入的位数之和；然后做乘法的时候，**<font color=red size=3 face="微软雅黑">
+i+j就是每次运算对应结果的位置</font>**，其上存放着每次运算后该位置的结果值，temp是每次运算的时候的进位值。
