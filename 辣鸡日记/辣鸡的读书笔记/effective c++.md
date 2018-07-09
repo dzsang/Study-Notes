@@ -140,3 +140,6 @@ virtual是关键字，声明该基类为派生类的虚基类。
 - virtual base的初始化责任是由继承体系中的最低层class负责，这暗示着
     (1)classes若派生自virtual bases而需要初始化，必须认知其virtual bases——不论那些bases距离多远
     (2)当一个新的derived class加入继承体系中，它必须承担起virtual bases（不论直接或间接）的初始化责任
+# 模板与泛型编程
+7/9
+1. 了解隐式接口和编译器多态
