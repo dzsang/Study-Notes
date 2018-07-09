@@ -143,3 +143,19 @@ virtual是关键字，声明该基类为派生类的虚基类。
 # 模板与泛型编程
 7/9
 1. 了解隐式接口和编译器多态
+- 声明template参数时，前缀关键字class和typename可互换
+- 任何时候当你想要在template中指涉UI和嵌套从属名称，就必须在紧临它的前一个位置放上关键词typename。
+- 不得在base class lists或member initialization list(成员初值列)内以它作为base class修饰符
+2. 学习处理模板化基类内的名称
+- class定义式最前头的“template<>”语法象征这既不是template也不是标准class，而是个特化版的A template，在template实参是B时被使用。这是所谓的模板全特化
+```
+template<>
+class A<B> {
+public:
+    ...
+}
+```
+3. 将与参数无关的代码抽离templates
+>这一章难度有点大，以后再看一遍
+
+# 定制new和delete
