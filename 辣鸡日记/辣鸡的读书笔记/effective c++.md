@@ -159,3 +159,21 @@ public:
 >这一章难度有点大，以后再看一遍
 
 # 定制new和delete
+## 7/10
+1. 要记住operator new和operator delete只适合用来分配单一对象。Arrays所用的内存由operator new[]分配出来，由operator delete[]归还
+2. STL容器所使用的heap内存是由容器所拥有的分配器对象管理，不是被new和delete直接管理
+3. 了解**new-handle**行为
+- operator new无法满足某一内存分配需求时，它会抛出异常。以前它会返回一个null指针(旧式行为)。现在它会在抛出异常以反映一个未获满足的内存需求之前，它会调用先调用一个客户指定的错误处理函数，一个所谓的*new-handle*。为了指定这个“用以处理内存不足”的函数，客户必须调用set_new_handle(位于< new>的一个标准库函数)：
+```
+namespace std {
+    typedef void (*new_handle) ( );
+    new_handle set_new_handle(new_handle p) throw();
+}
+详见p240
+```
+4. 了解new和delete的合理替换时机
+5. 编写new和delete时需鼓手常规
+# 杂项讨论
+1. 不要亲易忽视编译器的警告
+2. 让自己熟悉包括TR1在内的标准程序库
+3. 让自己熟悉Boost
